@@ -2,7 +2,6 @@ use scraper::Html;
 use scraper::Selector;
 use serde::{Serialize,Deserialize};
 
-use crate::lib::downloader::file_download_sync;
 
 #[derive(Debug,Clone,Deserialize, Serialize)]
 pub struct ChapterRef{
@@ -20,7 +19,7 @@ impl ChapterRef{
     if self.pages.len() > 0 {
         return Ok(true);
     }
-    println!("non scansionato prima prima");
+    println!("non scansionato prima");
     let url : String = if self.url.ends_with("?style=list") {
         self.url.clone()
     }else{
@@ -57,14 +56,12 @@ impl ChapterRef{
         
         
         let path: String = if self.volume_part {
-             format!("/manga/download/{} {} {}.zip",mangatitle.trim(),self.volume_name.clone().trim(),self.name.clone().trim())
+            format!("/manga/download/{} {} {}.zip",mangatitle.trim(),self.volume_name.clone().trim(),self.name.clone().trim())
         } else{
             format!("/manga/download/{} {}.zip",mangatitle.trim(),self.name.clone().trim())
         };
 
-        match std::fs::remove_file(&path){
-            _=>{}
-        };
+        match std::fs::remove_file(&path){ _=>{} };//se succede qualsiasi cosa continua lo stesso 
 
         
 
@@ -77,26 +74,7 @@ impl ChapterRef{
             zip.write_all(&reqwest::blocking::get(page).unwrap().bytes().unwrap()).unwrap();
         }
         zip.finish().unwrap();
-    /*
-        let folder : String = if self.volume_part {
-            // manga/volume/capitolo/     + n.jpg
-            format!("/manga/download/{}/{}/{}/",mangatitle.to_lowercase().trim(),self.volume_name.clone().to_lowercase().trim(),self.name.clone().to_lowercase().trim())
-        }else{
-            format!("/manga/download/{}/{}/",mangatitle.to_lowercase().trim(),self.name.clone().to_lowercase().trim())
-        };
-        match std::fs::remove_dir_all(&folder){
-            _=>{}
-        }
-        match std::fs::create_dir_all(&folder){
-            _=>{}
-        }*/
-        /*
-        for (i,page) in self.pages.iter().enumerate(){
-            let file_path = format!("{}{}.jpg",folder,i);
-            file_download_sync(page.clone(),file_path);
-        }*/
-
-        //
+  
         self.downloaded = true;
         Ok(())
    }

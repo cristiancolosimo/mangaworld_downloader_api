@@ -1,132 +1,84 @@
 
 mod lib;
 mod data;
+mod synclist;
 pub use crate::data::manga::Manga;
+pub use crate::synclist::synclist::Synclist;
+use std::time::Duration;
 
-mod sync {
-    use serde::{Serialize,Deserialize};
+fn setup(){
+    //mkdir state
+    std::fs::create_dir_all("/manga/state").expect("error creation folder in /manga");
+    //mkdir download
+    std::fs::create_dir_all("/manga/download").expect("error creation folder in /manga");
 
-    #[derive(Debug,Clone,Deserialize, Serialize)]
-    struct SyncItem{
-        sync:bool,
-        url:String
-    }
-    #[derive(Debug,Clone,Deserialize, Serialize)]
-    pub struct Synclist{
-        lastsync:u128,
-        synclist:Vec<SyncItem>
-    }
-    impl Synclist{
-        pub fn get()-> Synclist{
-            match std::fs::read_to_string("/manga/synclist.json"){
-                Ok(str)=> {
-                    match serde_json::from_str(&str){
-                        Ok(synclist) => synclist,
-                        Err(_)=> panic!("Errore nella lettura della synclist, formato json invalido")
-                    }
-                },
-                Err(_)=> {
-                    use std::io::prelude::*;
-                    let tamplate = serde_json::to_string(&Synclist{
-                        synclist:Vec::new(),
-                        lastsync:0
-                    }).unwrap();
+}
+use warp::Filter;
+async fn sync(){
+    let mut synclist = Synclist::get();
+    let manga_list_title = synclist.sync_manga().await;
+    synclist.sync_update_pages(&manga_list_title).await;
+    synclist.sync_download(&manga_list_title).await;
 
-                    let mut file = match std::fs::File::create("/manga/synclist.json"){
-                        Ok(file)=> file,
-                        Err(_)=> panic!("Errore nella  creazione della /manga/synclist, errore permessi")
-                    };
-                    file.write_all(tamplate.as_bytes()).unwrap();
-                    file.sync_all().unwrap();
-            
-                    panic!("Errore nella lettura della synclist, synclist.json non trovato o errore permessi");
-                }
-            }
-        }
-        
-        pub fn set(&self){
-            use std::io::prelude::*;
+}
+use std::sync::atomic::AtomicBool;
+use std::sync::Arc;
 
-            let state_string = serde_json::to_string(&self).unwrap();
-            let file_path = "/manga/synclist.json";
-            let mut file = match std::fs::File::create(&file_path){
-                Ok(file)=> file,
-                Err(_)=>  std::fs::File::open(&file_path).unwrap()
-            };
-            file.write_all(state_string.as_bytes()).unwrap();
-            file.sync_all().unwrap();
-            println!("synclist saved");
 
-        }
-        pub async fn sync_manga(&mut self) -> Vec<String> {
-            pub use crate::data::manga::Manga;
-            let mut title_list  : Vec<String>= Vec::new();
-            for i in 0..self.synclist.len(){
-                if self.synclist[i].sync {
-                    let data = Manga::new_from_url(String::from(self.synclist[i].url.clone())).await.unwrap(); 
-                    title_list.push(data.title.clone());
-                    data.save_state();
-                }
-            }
-            self.lastsync = std::time::SystemTime::now().duration_since(std::time::SystemTime::UNIX_EPOCH).unwrap().as_millis();
-            self.set();
-        
-            return title_list;
-        }
-        pub async fn sync_update_pages(&mut self, title_list : &Vec<String>) {
-            pub use crate::data::manga::Manga;
-            
-            for i in 0..title_list.len(){
-                
-                let mut data = Manga::new_from_file_from_title(&title_list[i].clone()).unwrap(); 
-                data.update_pages().await;
-                data.save_state();
-            
-            }
-            
-        }
-        pub fn sync_download(&mut self, title_list : &Vec<String>){ //da eseguire su un thread diverso per non bloccare il resto delle istruzioni
-            pub use crate::data::manga::Manga;
-            
-            let title_list = title_list.clone();
-            let handler = std::thread::spawn( move|| {
-                for i in 0..title_list.len(){
-                    let mut manga = Manga::new_from_file_from_title(&title_list[i].clone()).unwrap(); 
-                    manga.download();
-                }
-            });
-            handler.join().unwrap();
 
-        }
-    }
-    
+async fn web_server(){
+
+    let hello = warp::path!("sync")
+    .map(move || {
+        println!("reset intervallo");
+        //interval.reset();
+        "Start sync"
+    });
+
+warp::serve(hello)
+    .run(([0, 0, 0, 0], 3030))
+    .await;
+
+
 }
 
-use self::sync::Synclist;
-use std::time::Duration;
 
 #[tokio::main]
 async fn main() {
-    let fovever  = tokio::task::spawn(async {
-        let mut interval = tokio::time::interval(Duration::from_secs(6 * 60*60));
-        
-        async fn sync(){
-            let mut synclist = Synclist::get();
-            let manga_list_title = synclist.sync_manga().await;
-            synclist.sync_update_pages(&manga_list_title).await;
-            synclist.sync_download(&manga_list_title);
+    setup();
+    let mut interval = tokio::time::interval(Duration::from_secs(6 * 60*60));
+
+    //interval.clear();
+    let  working  = Arc::new(AtomicBool::new(false));
+    let  work = working.clone();
+    //let web_server = tokio::task::spawn( ||   {
+//
+    //});
+    //web_server.await;
     
-        }
+    let download_loop  = tokio::task::spawn( async move{
         loop{
+            working.store(true,std::sync::atomic::Ordering::Relaxed);
             sync().await;
+            working.store(false,std::sync::atomic::Ordering::Relaxed);
             interval.tick().await;
-
         }
-
-    
     });
-    fovever.await.unwrap();
     
+    let test_loop = tokio::task::spawn(async move  {
+        let mut test_int = tokio::time::interval(Duration::from_secs(10));
+
+        loop {
+            println!("valore : {}", work.load(std::sync::atomic::Ordering::Relaxed));
+            test_int.tick().await;
+        }
+    });
+        test_loop.await.unwrap();
+        download_loop.await.unwrap();
+    
+    //
+    //
+
 }
 
 

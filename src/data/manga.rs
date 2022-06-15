@@ -41,7 +41,6 @@ impl MangaGenerics{
 
 impl Manga{
 
-
 	pub fn new_from_file_from_title(title:&String)->Result<Manga, ()>{
 		let file_path = format!("/manga/state/{}.json",title.to_lowercase().trim());
 		
@@ -56,7 +55,6 @@ impl Manga{
 				Err(())
 			} 
 		}
-
 		
 	}
 
@@ -143,10 +141,10 @@ impl Manga{
 			let chapters = Manga::get_chapters(&volume);
 
 			volumi.push(Volume{
-				name:name,
+				name:name.replace("Volume ", "vol"), //eseguire il replace da Volume a vol per l'indexing di kavita
 				chapters: chapters
 			});
-		}
+		} 
 		//.volume-element 
 		let volumi: Vec<Volume> = volumi.into_iter().rev().collect();
 		//fare un reverse del vettore prima di inviarlo
@@ -162,7 +160,8 @@ impl Manga{
 			let name = String::from(chapter.select(&chapter_text).next().unwrap().text().next().unwrap());
 			let url = String::from(chapter.select(&chapter_url).next().unwrap().value().attr("href").unwrap());
 			chapters.push(ChapterRef{
-				name,url,
+				name: name.replace("Capitolo ", "c"),//eseguire il replace da Capotolo a c per l'indexing di kavita
+				url,
 				pages:Vec::new(),
 				downloaded:false,
 				volume_name:String::from(""),

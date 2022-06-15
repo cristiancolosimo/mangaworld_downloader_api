@@ -1,0 +1,132 @@
+{
+      "sync": true,
+      "url": "https://www.mangaworld.in/manga/2586/into-the-light-once-again"
+    },
+    {
+      "sync": true,
+      "url": "https://www.mangaworld.in/manga/2476/amagami-san-chi-no-enmusubi-1/"
+    },
+    {
+      "sync": true,
+      "url": "https://www.mangaworld.in/manga/1876/citrus-1"
+    },
+    {
+      "sync": true,
+      "url": "https://www.mangaworld.in/manga/395/citrus"
+    },
+    {
+      "sync": true,
+      "url": "https://www.mangaworld.in/manga/2616/kimi-wa-midara-na-boku-no-joou/"
+    },
+    {
+      "sync": true,
+      "url": "https://www.mangaworld.in/manga/2372/oshi-no-ko/"
+    },
+    {
+      "sync": true,
+      "url": "https://www.mangaworld.in/manga/2255/shy/"
+    },
+    {
+      "sync": true,
+      "url": "https://www.mangaworld.in/manga/2256/sono-bisque-doll-wa-koi-wo-suru/"
+    },
+    {
+      "sync": true,
+      "url": "https://www.mangaworld.in/manga/1702/kanojo-okarishimasu/"
+    },
+    {
+      "sync": true,
+      "url": "https://www.mangaworld.in/manga/1684/tokyo-revengers/"
+    },
+    {
+      "sync": true,
+      "url": "https://www.mangaworld.in/manga/2485/dandadan"
+    },
+    {
+      "sync": true,
+      "url": "https://www.mangaworld.in/manga/1722/arifureta-shokugyou-de-sekai-saikyou"
+    },
+    {
+      "sync": true,
+      "url": "https://www.mangaworld.in/manga/2027/masamune-kun-no-revenge/"
+    },
+    {
+      "sync": true,
+      "url": "https://www.mangaworld.in/manga/2678/masamune-kun-no-revenge-after-school/"
+    },
+    {
+      "sync": true,
+      "url": "https://www.mangaworld.in/manga/2676/takopii-no-genzai/"
+    },
+    {
+      "sync": true,
+      "url": "https://www.mangaworld.in/manga/2154/tsuki-ga-michibiku-isekai-douchuu"
+    },
+    {
+      "sync": true,
+      "url": "https://www.mangaworld.in/manga/2602/vanitas-no-karte"
+    },
+    {
+      "sync": true,
+      "url": "https://www.mangaworld.in/manga/1865/minamoto-kun-monogatari"
+    },
+    {
+      "sync": true,
+      "url": "https://www.mangaworld.in/manga/2667/mahoutsukai-no-reimeiki/"
+    },
+    {
+      "sync": true,
+      "url": "https://www.mangaworld.in/manga/1847/boku-no-hero-academia/"
+    },
+    {
+      "sync": true,
+      "url": "https://www.mangaworld.in/manga/716/kimetsu-no-yaiba"
+    },
+    {
+      "sync": true,
+      "url": "https://www.mangaworld.in/manga/1738/solo-leveling"
+    },
+    {
+      "sync": true,
+      "url": "https://www.mangaworld.in/manga/1580/eden-s-zero/"
+    },
+    {
+      "sync": true,
+      "url": "https://www.mangaworld.in/manga/1818/kaiju-no-8/"
+    },
+    {
+      "sync": true,
+      "url": "https://www.mangaworld.in/manga/1803/fire-brigade-of-flames/"
+    },
+    {
+      "sync": true,
+      "url": "https://www.mangaworld.in/manga/2220/owari-no-seraph/"
+    },
+    {
+      "sync": true,
+      "url": "https://www.mangaworld.in/manga/2234/gleipnir/"
+    },
+    {
+      "sync": true,
+      "url": "https://www.mangaworld.in/manga/1747/black-clover/"
+    },
+    {
+      "sync": true,
+      "url": "https://www.mangaworld.in/manga/2192/kakkou-no-iinazuke/"
+    },
+    {
+      "sync": true,
+      "url": "https://www.mangaworld.in/manga/1739/hajimete-no-gal/"
+    },
+    {
+      "sync": true,
+      "url": "https://www.mangaworld.in/manga/2118/hokago-wa-kissaten-de/"
+    },
+    {
+      "sync": true,
+      "url": "https://www.mangaworld.in/manga/2579/kanojo-to-boku-no-endroll/"
+    },
+    {
+      "sync": true,
+      "url": "https://www.mangaworld.in/manga/1854/tadokoro-san/"
+    }
