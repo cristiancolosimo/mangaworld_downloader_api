@@ -57,9 +57,9 @@ impl ChapterRef{
         
         
         let path: String = if self.volume_part {
-             format!("/manga/download/{} {} {}.zip",mangatitle.trim(),self.volume_name.clone().trim(),self.name.clone().trim())
+             format!("/manga/download/{}/{} {} {}.zip",mangatitle.trim(),mangatitle.trim(),self.volume_name.clone().trim(),self.name.clone().trim())
         } else{
-            format!("/manga/download/{} {}.zip",mangatitle.trim(),self.name.clone().trim())
+            format!("/manga/download/{}/{} {}.zip",mangatitle.trim(),mangatitle.trim(),self.name.clone().trim())
         };
 
         match std::fs::remove_file(&path){
