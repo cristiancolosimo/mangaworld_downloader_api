@@ -55,7 +55,9 @@ impl ChapterRef{
             return Ok(());
         }
         
-        
+        match std::fs::create_dir_all(format!("/manga/download/{}/",mangatitle.trim())){
+            _=>{}
+        };
         let path: String = if self.volume_part {
              format!("/manga/download/{}/{} {} {}.zip",mangatitle.trim(),mangatitle.trim(),self.volume_name.clone().trim(),self.name.clone().trim())
         } else{
